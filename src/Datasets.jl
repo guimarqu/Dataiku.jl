@@ -399,7 +399,7 @@ end
 
 function _get_stream_write(df::AbstractDataFrame)
     io = Base.BufferStream()
-    CSV.write(io, df; writeheader=false, dateformat=DKU_DATE_FORMAT)
+    CSV.write(io, df; header=false, dateformat=DKU_DATE_FORMAT)
     close(io)
     io
 end
