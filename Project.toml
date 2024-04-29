@@ -16,6 +16,6 @@ Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [compat]
 CSV = "^0.7"
-DataFrames = "^0.21"
+DataFrames = "^0.22"
 HTTP = "^0.9"
 JSON = "^0"
