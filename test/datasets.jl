@@ -156,7 +156,7 @@ end
         end
 
         data = Dataiku.get_dataframe(ds_part, [:A]; partitions=[:A])
-        test_dataframe_values(DataFrame([[1, 4]]), data)
+        test_dataframe_values(DataFrame([[1, 4]], :auto), data)
     end
 
     @testset "writing" begin
