@@ -62,7 +62,8 @@ end
 
     data = Dataiku.get_dataframe(ds_no_part)
 
-    exp_df = CSV.File(joinpath(test_dir,"data", "no_part.csv"); header=true, dateformat=Dataiku.DKU_DATE_FORMAT) |> DataFrame!
+    exp_csv = CSV.File(joinpath(test_dir,"data", "no_part.csv"); header=true, dateformat=Dataiku.DKU_DATE_FORMAT)
+    exp_df = DataFrame(exp_csv; copycols = false)
 
     @testset "reading" begin
 
@@ -148,13 +149,14 @@ end
 
     @testset "reading" begin
         for part in "ABC"
-            exp_data = CSV.File(joinpath(dir, string(part), "test.csv"); header=true) |> DataFrame!
+            exp_csv = CSV.File(joinpath(dir, string(part), "test.csv"); header=true)
+            exp_data = DataFrame(exp_csv; copycols = false)
             data = Dataiku.get_dataframe(ds_part; partitions=[part])
             test_dataframe_values(exp_data, data)
         end
 
         data = Dataiku.get_dataframe(ds_part, [:A]; partitions=[:A])
-        test_dataframe_values(DataFrame!([[1, 4]]), data)
+        test_dataframe_values(DataFrame([[1, 4]]), data)
     end
 
     @testset "writing" begin
@@ -165,7 +167,8 @@ end
         )
         p_body["managed"] = true
     
-        exp_df = CSV.File(joinpath(test_dir, "data", "no_part.csv"); header=true) |> DataFrame!
+        exp_csv = CSV.File(joinpath(test_dir, "data", "no_part.csv"); header=true)
+        exp_df = DataFrame(exp_csv; copycols = false)
         writing_dataset = Dataiku.create_dataset(p_body)
         Dataiku.write_with_schema(writing_dataset, exp_df; partition=:A)
         test_dataframe_values(exp_df, Dataiku.get_dataframe(writing_dataset; partitions=[:A]))
