@@ -86,7 +86,7 @@ function get_dataframe(ds::DSSDataset, columns::AbstractArray=[];
         throw(DkuException(_identify(ds, params["partitions"]) * " is empty"))
     end
     try
-        CSV.read(IOBuffer(data); delim='\t',
+        CSV.read(IOBuffer(data), DataFrame; delim='\t',
                                 types=types,
                                 header=names,
                                 truestrings=truestrings,
@@ -138,7 +138,7 @@ function iter_data_chunks(ds::DSSDataset, columns::AbstractArray=[];
             open_quotes = false
             while !eof(stream)
                 chunk, last_line, open_quotes = _split_last_line(String(readavailable(stream)), open_quotes)
-                put!(chnl, CSV.read(IOBuffer(first_line * chunk); delim='\t',
+                put!(chnl, CSV.read(IOBuffer(first_line * chunk), DataFrame; delim='\t',
                                                                   types=types,
                                                                   header=names,
                                                                   truestrings=truestrings,
